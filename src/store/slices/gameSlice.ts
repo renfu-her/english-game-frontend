@@ -79,7 +79,7 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchGameRooms = createAsyncThunk(
   'game/fetchGameRooms',
-  async (params?: { status?: string; category_id?: number; limit?: number }, { rejectWithValue }) => {
+  async (params: { status?: string; category_id?: number; limit?: number } = {}, { rejectWithValue }) => {
     try {
       return await apiService.getGameRooms(params);
     } catch (error: any) {

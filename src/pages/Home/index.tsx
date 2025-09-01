@@ -232,33 +232,33 @@ const Home: React.FC = () => {
                  </Typography>
                </Card>
              </Grid>
-            <Grid xs={12} md={3}>
-              <Card sx={{ textAlign: 'center', p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 2 }}>2</Typography>
-                <Typography variant="h6" gutterBottom>Get Ready</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Set your ready status and wait for the game to start
-                </Typography>
-              </Card>
-            </Grid>
-            <Grid xs={12} md={3}>
-              <Card sx={{ textAlign: 'center', p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 2 }}>3</Typography>
-                <Typography variant="h6" gutterBottom>Answer Questions</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Answer questions quickly and accurately to earn points
-                </Typography>
-              </Card>
-            </Grid>
-            <Grid xs={12} md={3}>
-              <Card sx={{ textAlign: 'center', p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 2 }}>4</Typography>
-                <Typography variant="h6" gutterBottom>Win & Learn</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  See your ranking and learn from detailed explanations
-                </Typography>
-              </Card>
-            </Grid>
+                         <Grid item xs={12} md={3}>
+               <Card sx={{ textAlign: 'center', p: 3 }}>
+                 <Typography variant="h4" sx={{ mb: 2 }}>2</Typography>
+                 <Typography variant="h6" gutterBottom>Get Ready</Typography>
+                 <Typography variant="body2" color="text.secondary">
+                   Set your ready status and wait for the game to start
+                 </Typography>
+               </Card>
+             </Grid>
+                         <Grid item xs={12} md={3}>
+               <Card sx={{ textAlign: 'center', p: 3 }}>
+                 <Typography variant="h4" sx={{ mb: 2 }}>3</Typography>
+                 <Typography variant="h6" gutterBottom>Answer Questions</Typography>
+                 <Typography variant="body2" color="text.secondary">
+                   Answer questions quickly and accurately to earn points
+                 </Typography>
+               </Card>
+             </Grid>
+                         <Grid item xs={12} md={3}>
+               <Card sx={{ textAlign: 'center', p: 3 }}>
+                 <Typography variant="h4" sx={{ mb: 2 }}>4</Typography>
+                 <Typography variant="h6" gutterBottom>Win & Learn</Typography>
+                 <Typography variant="body2" color="text.secondary">
+                   See your ranking and learn from detailed explanations
+                 </Typography>
+               </Card>
+             </Grid>
           </Grid>
         </Box>
 

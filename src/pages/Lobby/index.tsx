@@ -155,7 +155,7 @@ const Lobby: React.FC = () => {
         /* Room Grid */
         <Grid container spacing={3}>
           {rooms.length === 0 ? (
-                         <Grid xs={12}>
+                         <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 4 }}>
                   <Typography variant="h6" color="text.secondary" gutterBottom>
@@ -169,7 +169,7 @@ const Lobby: React.FC = () => {
             </Grid>
           ) : (
             rooms.map((room) => (
-                             <Grid xs={12} sm={6} md={4} key={room.id}>
+                             <Grid item xs={12} sm={6} md={4} key={room.id}>
                 <Card 
                   sx={{ 
                     height: '100%',
