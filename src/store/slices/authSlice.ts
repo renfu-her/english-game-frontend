@@ -11,7 +11,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
   token: localStorage.getItem('token'),
   isAuthenticated: !!localStorage.getItem('token'),
   loading: false,
@@ -23,11 +23,14 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginRequest, { rejectWithValue }) => {
     try {
+      console.log('Login thunk - sending credentials:', credentials);
       const response = await apiService.login(credentials);
+      console.log('Login thunk - received response:', response);
       localStorage.setItem('token', response.token);
       localStorage.setItem('user', JSON.stringify(response.user));
       return response;
     } catch (error: any) {
+      console.error('Login thunk - error:', error);
       return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
   }
@@ -91,16 +94,19 @@ const authSlice = createSlice({
     builder
       // Login
       .addCase(login.pending, (state) => {
+        console.log('Login pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
+        console.log('Login fulfilled - setting auth state:', action.payload);
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state, action) => {
+        console.log('Login rejected - error:', action.payload);
         state.loading = false;
         state.error = action.payload as string;
       })

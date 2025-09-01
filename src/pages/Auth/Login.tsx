@@ -32,19 +32,37 @@ const Login: React.FC = () => {
   const from = location.state?.from?.pathname || '/lobby';
 
   useEffect(() => {
+    console.log('Login component - isAuthenticated:', isAuthenticated, 'from:', from);
     if (isAuthenticated) {
+      console.log('Redirecting to:', from);
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, from]);
 
   useEffect(() => {
+    // Clear any existing errors when component mounts
+    dispatch(clearError());
+    
     return () => {
-      dispatch(clearError());
+      // Clean up when component unmounts
     };
   }, [dispatch]);
 
   const onSubmit = async (data: LoginRequest) => {
-    await dispatch(login(data));
+    console.log('Submitting login form:', data);
+    try {
+      const result = await dispatch(login(data));
+      console.log('Login result:', result);
+      
+      // Check if login was successful
+      if (login.fulfilled.match(result)) {
+        console.log('Login successful, user should be redirected');
+      } else {
+        console.log('Login failed:', result.payload);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (

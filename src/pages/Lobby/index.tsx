@@ -66,9 +66,12 @@ const Lobby: React.FC = () => {
   } = useForm<CreateRoomForm>();
 
   useEffect(() => {
-    dispatch(fetchGameRooms({}));
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    // Only fetch data if user is authenticated
+    if (user) {
+      dispatch(fetchGameRooms({}));
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, user]);
 
   const handleCreateRoom = async (data: CreateRoomForm) => {
     const result = await dispatch(createGameRoom(data));
