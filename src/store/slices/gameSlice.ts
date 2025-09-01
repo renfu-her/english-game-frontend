@@ -70,8 +70,12 @@ export const fetchCategories = createAsyncThunk(
   'game/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      return await apiService.getCategories();
+      console.log('fetchCategories thunk - starting');
+      const categories = await apiService.getCategories();
+      console.log('fetchCategories thunk - received categories:', categories);
+      return categories;
     } catch (error: any) {
+      console.error('fetchCategories thunk - error:', error);
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories');
     }
   }
@@ -213,10 +217,12 @@ const gameSlice = createSlice({
         state.categoriesError = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
+        console.log('fetchCategories fulfilled - setting categories:', action.payload);
         state.categoriesLoading = false;
         state.categories = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
+        console.error('fetchCategories rejected - error:', action.payload);
         state.categoriesLoading = false;
         state.categoriesError = action.payload as string;
       })
@@ -227,7 +233,8 @@ const gameSlice = createSlice({
       })
       .addCase(fetchGameRooms.fulfilled, (state, action) => {
         state.roomsLoading = false;
-        state.rooms = action.payload;
+        // Ensure we always set rooms to an array
+        state.rooms = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchGameRooms.rejected, (state, action) => {
         state.roomsLoading = false;

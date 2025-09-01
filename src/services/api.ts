@@ -60,12 +60,28 @@ class ApiService {
 
   // Authentication
   async login(data: LoginRequest): Promise<AuthResponse> {
-    const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/login', data);
+    const response: AxiosResponse<any> = await this.api.post('/auth/login', data);
+    console.log('Login response:', response.data);
+    // Handle the nested data structure
+    if (response.data.data) {
+      return {
+        user: response.data.data.member,
+        token: response.data.data.token
+      };
+    }
     return response.data;
   }
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
-    const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/register', data);
+    const response: AxiosResponse<any> = await this.api.post('/auth/register', data);
+    console.log('Register response:', response.data);
+    // Handle the nested data structure
+    if (response.data.data) {
+      return {
+        user: response.data.data.member,
+        token: response.data.data.token
+      };
+    }
     return response.data;
   }
 
@@ -80,8 +96,11 @@ class ApiService {
 
   // Categories
   async getCategories(): Promise<Category[]> {
-    const response: AxiosResponse<Category[]> = await this.api.get('/categories');
-    return response.data;
+    console.log('Fetching categories from:', this.api.defaults.baseURL + '/categories');
+    const response: AxiosResponse<any> = await this.api.get('/categories');
+    console.log('Categories response:', response.data);
+    // Handle the nested data structure
+    return response.data.data || response.data;
   }
 
   async getCategory(id: number): Promise<Category> {
@@ -113,18 +132,33 @@ class ApiService {
 
   // Game Rooms
   async getGameRooms(params?: { status?: string; category_id?: number; limit?: number }): Promise<GameRoom[]> {
-    const response: AxiosResponse<GameRoom[]> = await this.api.get('/game-rooms', { params });
-    return response.data;
+    const response: AxiosResponse<any> = await this.api.get('/game-rooms', { params });
+    console.log('Game rooms response:', response.data);
+    console.log('Game rooms response type:', typeof response.data);
+    console.log('Game rooms response is array:', Array.isArray(response.data));
+    
+    // Handle the nested data structure
+    const rooms = response.data.data || response.data;
+    console.log('Processed rooms:', rooms);
+    console.log('Processed rooms type:', typeof rooms);
+    console.log('Processed rooms is array:', Array.isArray(rooms));
+    
+    // Ensure we return an array
+    return Array.isArray(rooms) ? rooms : [];
   }
 
   async createGameRoom(data: CreateRoomForm): Promise<GameRoom> {
-    const response: AxiosResponse<GameRoom> = await this.api.post('/game-rooms', data);
-    return response.data;
+    const response: AxiosResponse<any> = await this.api.post('/game-rooms', data);
+    console.log('Create game room response:', response.data);
+    // Handle the nested data structure
+    return response.data.data || response.data;
   }
 
   async getGameRoom(id: number): Promise<GameRoom> {
-    const response: AxiosResponse<GameRoom> = await this.api.get(`/game-rooms/${id}`);
-    return response.data;
+    const response: AxiosResponse<any> = await this.api.get(`/game-rooms/${id}`);
+    console.log('Get game room response:', response.data);
+    // Handle the nested data structure
+    return response.data.data || response.data;
   }
 
   async findGameRoomByCode(code: string): Promise<GameRoom> {

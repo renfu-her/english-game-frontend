@@ -54,6 +54,17 @@ const Lobby: React.FC = () => {
     roomsError 
   } = useSelector((state: RootState) => state.game);
 
+  // Ensure rooms is always an array
+  const safeRooms = Array.isArray(rooms) ? rooms : [];
+
+  // Debug logging
+  console.log('Lobby component - categories state:', categories);
+  console.log('Lobby component - categories length:', Array.isArray(categories) ? categories.length : 'not an array');
+  console.log('Lobby component - categoriesLoading:', categoriesLoading);
+  console.log('Lobby component - categoriesError:', useSelector((state: RootState) => state.game.categoriesError));
+  console.log('Lobby component - rooms state:', rooms);
+  console.log('Lobby component - rooms length:', Array.isArray(rooms) ? rooms.length : 'not an array');
+
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [joinDialogOpen, setJoinDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<any>(null);
@@ -68,6 +79,7 @@ const Lobby: React.FC = () => {
   useEffect(() => {
     // Only fetch data if user is authenticated
     if (user) {
+      console.log('Lobby useEffect - user authenticated, fetching data');
       dispatch(fetchGameRooms({}));
       dispatch(fetchCategories());
     }
@@ -157,8 +169,8 @@ const Lobby: React.FC = () => {
       ) : (
         /* Room Grid */
         <Grid container spacing={3}>
-          {rooms.length === 0 ? (
-                         <Grid item xs={12}>
+          {safeRooms.length === 0 ? (
+            <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 4 }}>
                   <Typography variant="h6" color="text.secondary" gutterBottom>
@@ -170,8 +182,8 @@ const Lobby: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid>
-          ) : (
-            rooms.map((room) => (
+           ) : (
+             safeRooms.map((room) => (
                              <Grid item xs={12} sm={6} md={4} key={room.id}>
                 <Card 
                   sx={{ 
@@ -280,12 +292,15 @@ const Lobby: React.FC = () => {
                 {...register('category_id')}
                 defaultValue=""
               >
-                <MenuItem value="">Random Category</MenuItem>
-                {categories.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.name} (Level {category.difficulty_level})
-                  </MenuItem>
-                ))}
+                                 <MenuItem value="">Random Category</MenuItem>
+                 {Array.isArray(categories) && categories.map((category) => {
+                   console.log('Rendering category:', category);
+                   return (
+                     <MenuItem key={category.id} value={category.id}>
+                       {category.name} (Level {category.difficulty_level})
+                     </MenuItem>
+                   );
+                 })}
               </Select>
             </FormControl>
             <TextField
