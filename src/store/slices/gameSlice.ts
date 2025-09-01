@@ -85,8 +85,14 @@ export const fetchGameRooms = createAsyncThunk(
   'game/fetchGameRooms',
   async (params: { status?: string; category_id?: number; limit?: number } = {}, { rejectWithValue }) => {
     try {
-      return await apiService.getGameRooms(params);
+      console.log('fetchGameRooms thunk - starting with params:', params);
+      const rooms = await apiService.getGameRooms(params);
+      console.log('fetchGameRooms thunk - received rooms:', rooms);
+      console.log('fetchGameRooms thunk - rooms type:', typeof rooms);
+      console.log('fetchGameRooms thunk - rooms is array:', Array.isArray(rooms));
+      return rooms;
     } catch (error: any) {
+      console.error('fetchGameRooms thunk - error:', error);
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch game rooms');
     }
   }
